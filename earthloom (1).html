@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Earthloom — Made Different</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:    #F7F0E6;
+      --beige:    #E8D9C0;
+      --tan:      #C9AF90;
+      --brown:    #7A5C3E;
+      --dark-brown: #3E2A18;
+      --charcoal: #2D2925;
+      --warm-gray:#7A7068;
+      --white:    #FEFCF8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(247, 240, 230, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(122, 92, 62, 0.12);
+      transition: padding .3s ease;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      color: var(--dark-brown);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex; gap: 2.4rem; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: .75rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--brown); }
+    .nav-cta {
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: .55rem 1.4rem;
+      border: 1px solid var(--brown);
+      color: var(--brown);
+      text-decoration: none;
+      transition: background .25s, color .25s;
+    }
+    .nav-cta:hover { background: var(--brown); color: var(--white); }
+
+    /* ── HERO ────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      background: var(--charcoal);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding-top: 80px;
+    }
+
+    /* background watermark */
+    .hero-watermark {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-watermark span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(6rem, 18vw, 18rem);
+      font-weight: 600;
+      letter-spacing: .15em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(201,175,144,.1);
+      white-space: nowrap;
+    }
+
+    /* vertical thread lines */
+    .hero-threads {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .thread {
+      position: absolute; top: 0;
+      width: 1px; height: 100%;
+      background: rgba(201,175,144,.06);
+    }
+    .thread::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 0;
+      width: 1px;
+      height: 40px;
+      background: rgba(201,175,144,.35);
+      animation: threadDrop 3s ease-in-out infinite;
+    }
+    .thread:nth-child(1) { left: 18%; }
+    .thread:nth-child(2) { left: 38%; }
+    .thread:nth-child(3) { left: 62%; }
+    .thread:nth-child(4) { left: 82%; }
+    .thread:nth-child(2)::after { animation-delay: .6s; }
+    .thread:nth-child(3)::after { animation-delay: 1.2s; }
+    .thread:nth-child(4)::after { animation-delay: 1.8s; }
+
+    /* left color band */
+    .hero-band {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: var(--brown);
+    }
+
+    /* swatches — top right decorative */
+    .hero-swatches {
+      position: absolute;
+      top: 6rem; right: 5rem;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .swatch {
+      height: 5px; border-radius: 2px;
+      opacity: .6;
+    }
+    .swatch:nth-child(1) { width: 48px; background: var(--tan); }
+    .swatch:nth-child(2) { width: 32px; background: var(--brown); }
+    .swatch:nth-child(3) { width: 20px; background: var(--beige); opacity:.3; }
+
+    /* main content */
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center;
+      padding: 2rem 2rem;
+      max-width: 760px;
+      animation: fadeUp .9s .15s both ease;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .8rem;
+      font-size: .65rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--tan);
+      margin-bottom: 2rem;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      display: block;
+      width: 32px; height: 1px;
+      background: var(--brown);
+      opacity: .6;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.4rem, 7vw, 7rem);
+      line-height: 1.0;
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: .6rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--tan);
+    }
+    .hero-tagline {
+      font-size: .72rem;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: rgba(201,175,144,.45);
+      margin-bottom: 2rem;
+    }
+    .hero-divider {
+      width: 48px; height: 1px;
+      background: var(--brown);
+      margin: 0 auto 1.8rem;
+      opacity: .5;
+    }
+    .hero-desc {
+      font-size: .9rem;
+      line-height: 1.9;
+      color: rgba(247,240,230,.45);
+      max-width: 400px;
+      margin: 0 auto 2.8rem;
+      letter-spacing: .04em;
+    }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-block;
+      padding: .9rem 2.6rem;
+      background: var(--brown);
+      color: var(--cream);
+      text-decoration: none;
+      font-size: .7rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      transition: background .25s, transform .2s;
+    }
+    .btn-primary:hover { background: #8F6B4A; transform: translateY(-2px); }
+    .btn-ghost {
+      display: inline-block;
+      padding: .9rem 2.6rem;
+      border: 1px solid rgba(201,175,144,.3);
+      color: rgba(247,240,230,.6);
+      text-decoration: none;
+      font-size: .7rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      transition: border-color .25s, color .25s, transform .2s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--tan);
+      color: var(--cream);
+      transform: translateY(-2px);
+    }
+
+    /* bottom scroll hint */
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.2rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    }
+    .hero-scroll span {
+      font-size: .58rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(201,175,144,.3);
+    }
+    .hero-scroll-line {
+      width: 1px; height: 40px;
+      background: rgba(201,175,144,.2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* bottom info strip */
+    .hero-strip {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: flex;
+      border-top: 1px solid rgba(201,175,144,.08);
+    }
+    .hero-strip-item {
+      flex: 1;
+      padding: 1.1rem 2rem;
+      border-right: 1px solid rgba(201,175,144,.08);
+      text-align: center;
+    }
+    .hero-strip-item:last-child { border-right: none; }
+    .hero-strip-item strong {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--tan);
+    }
+    .hero-strip-item span {
+      font-size: .6rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(201,175,144,.3);
+    }
+
+    @keyframes threadDrop {
+      0%   { top: -40px; opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: .6; }
+      100% { top: 100vh; opacity: 0; }
+    }
+    @keyframes pulse {
+      0%,100% { opacity: .2; }
+      50% { opacity: .7; }
+    }
+
+    /* ── MARQUEE ─────────────────────────────────── */
+    .marquee-strip {
+      overflow: hidden;
+      background: var(--dark-brown);
+      padding: .9rem 0;
+    }
+    .marquee-inner {
+      display: flex; gap: 3rem;
+      animation: marquee 20s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      white-space: nowrap;
+      font-size: .68rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--tan);
+    }
+    .marquee-dot {
+      color: var(--brown); font-size: 1rem; line-height: 0; vertical-align: middle;
+    }
+
+    /* ── PRODUCTS ────────────────────────────────── */
+    #products {
+      padding: 7rem 5rem;
+    }
+    .section-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 3.5rem;
+    }
+    .section-label {
+      font-size: .65rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: .6rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      color: var(--dark-brown);
+      line-height: 1.15;
+    }
+    .section-link {
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--brown);
+      text-decoration: none;
+      border-bottom: 1px solid var(--tan);
+      padding-bottom: 2px;
+      transition: border-color .2s;
+    }
+    .section-link:hover { border-color: var(--brown); }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .product-card {
+      group: 1;
+      cursor: pointer;
+      transition: transform .3s ease;
+    }
+    .product-card:hover { transform: translateY(-6px); }
+    .product-img {
+      aspect-ratio: 3/4;
+      background: var(--beige);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+    .product-img-inner {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: .8rem;
+      transition: background .3s;
+    }
+    .product-card:hover .product-img-inner { background: #DDD0BA; }
+    .product-img-inner .p-icon { font-size: 3.5rem; opacity: .35; }
+    .product-img-inner span {
+      font-size: .6rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+    }
+    .product-tag {
+      position: absolute; top: 1rem; left: 1rem;
+      font-size: .6rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      background: var(--dark-brown);
+      color: var(--cream);
+      padding: .3rem .7rem;
+    }
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--dark-brown);
+      margin-bottom: .3rem;
+    }
+    .product-sub {
+      font-size: .72rem;
+      color: var(--warm-gray);
+      letter-spacing: .08em;
+      margin-bottom: .5rem;
+    }
+    .product-price {
+      font-size: .95rem;
+      color: var(--brown);
+      font-weight: 500;
+      letter-spacing: .06em;
+    }
+
+    /* ── ABOUT ───────────────────────────────────── */
+    #about {
+      padding: 7rem 5rem;
+      background: var(--dark-brown);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-img-main {
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, #5C3D22, #3E2A18);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1rem;
+    }
+    .about-img-main .a-icon { font-size: 5rem; opacity: .2; }
+    .about-img-main span {
+      font-size: .6rem; letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.2);
+    }
+    .about-img-accent {
+      position: absolute;
+      bottom: -2rem; right: -2rem;
+      width: 55%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #7A5C3E, #5C3D22);
+      display: flex; align-items: center; justify-content: center;
+      border: 4px solid var(--dark-brown);
+    }
+    .about-text { color: var(--cream); }
+    .about-text .section-label { color: var(--tan); }
+    .about-text .section-title { color: var(--cream); margin-bottom: 1.8rem; }
+    .about-text p {
+      font-size: .95rem;
+      line-height: 1.9;
+      color: rgba(247,240,230,.65);
+      margin-bottom: 1.4rem;
+    }
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 2.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(247,240,230,.12);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 300;
+      color: var(--tan);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: .65rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(247,240,230,.4);
+      margin-top: .3rem;
+    }
+
+    /* ── TESTIMONIALS ────────────────────────────── */
+    #testimonials {
+      padding: 7rem 5rem;
+      background: var(--beige);
+    }
+    #testimonials .section-header { margin-bottom: 4rem; }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+    .review-card {
+      background: var(--white);
+      padding: 2.2rem;
+      position: relative;
+    }
+    .review-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      line-height: .8;
+      color: var(--tan);
+      margin-bottom: .8rem;
+    }
+    .review-text {
+      font-size: .9rem;
+      line-height: 1.8;
+      color: var(--charcoal);
+      margin-bottom: 1.6rem;
+    }
+    .review-stars {
+      color: var(--brown);
+      font-size: .9rem;
+      letter-spacing: .1em;
+      margin-bottom: 1rem;
+    }
+    .review-author {
+      display: flex; align-items: center; gap: .8rem;
+    }
+    .review-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--tan);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem;
+      color: var(--white);
+      font-weight: 500;
+    }
+    .review-name {
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--dark-brown);
+      letter-spacing: .05em;
+    }
+    .review-loc {
+      font-size: .68rem;
+      color: var(--warm-gray);
+      letter-spacing: .08em;
+    }
+
+    /* ── GALLERY ─────────────────────────────────── */
+    #gallery {
+      padding: 7rem 5rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 220px);
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .gallery-item:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .gallery-inner {
+      width: 100%; height: 100%;
+      background: var(--beige);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: .6rem;
+      transition: background .3s, transform .4s;
+    }
+    .gallery-item:hover .gallery-inner {
+      background: #DDD0BA;
+      transform: scale(1.04);
+    }
+    .gallery-inner .g-icon { font-size: 2.5rem; opacity: .3; }
+    .gallery-inner span {
+      font-size: .6rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--warm-gray);
+    }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(46, 35, 24, 0);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .3s;
+    }
+    .gallery-item:hover .gallery-overlay { background: rgba(46,35,24,.25); }
+    .gallery-overlay-text {
+      font-size: .65rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .gallery-item:hover .gallery-overlay-text { opacity: 1; }
+
+    /* ── SOCIAL ──────────────────────────────────── */
+    #social {
+      padding: 5rem;
+      background: var(--charcoal);
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+    }
+    #social .section-label { color: var(--tan); margin-bottom: .6rem; }
+    #social .section-title { color: var(--cream); margin-bottom: 1rem; }
+    #social p {
+      font-size: .88rem;
+      color: rgba(247,240,230,.5);
+      letter-spacing: .06em;
+      margin-bottom: 2.5rem;
+    }
+    .social-links {
+      display: flex; gap: 1.2rem;
+    }
+    .social-btn {
+      display: flex; align-items: center; gap: .7rem;
+      padding: .9rem 2rem;
+      text-decoration: none;
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      transition: transform .2s, background .25s;
+    }
+    .social-btn:hover { transform: translateY(-3px); }
+    .social-btn.fb {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      color: var(--cream);
+    }
+    .social-btn.fb:hover { background: rgba(255,255,255,.15); }
+    .social-btn.ig {
+      background: var(--brown);
+      color: var(--cream);
+    }
+    .social-btn.ig:hover { background: #8F6B4A; }
+    .social-icon { font-size: 1.1rem; }
+
+    /* ── FOOTER / DEVELOPER CREDIT ───────────────── */
+    footer {
+      background: var(--dark-brown);
+      padding: 3rem 5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: .22em;
+      color: var(--tan);
+    }
+    .footer-tagline {
+      font-size: .65rem;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: rgba(201,175,144,.4);
+    }
+    .footer-divider {
+      width: 40px; height: 1px;
+      background: rgba(201,175,144,.2);
+    }
+    .dev-credit {
+      font-size: .68rem;
+      letter-spacing: .12em;
+      color: rgba(201,175,144,.35);
+    }
+    .dev-credit a {
+      color: var(--tan);
+      text-decoration: none;
+      opacity: .7;
+      transition: opacity .2s;
+    }
+    .dev-credit a:hover { opacity: 1; }
+    .dev-links {
+      display: flex; gap: 1rem; align-items: center;
+    }
+    .dev-links a {
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: rgba(201,175,144,.4);
+      transition: color .2s;
+    }
+    .dev-links a:hover { color: var(--tan); }
+
+    /* ── ANIMATIONS ──────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(8px); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────── -->
+<nav>
+  <a href="#" class="nav-logo">EARTHLOOM</a>
+  <ul class="nav-links">
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+  </ul>
+  <a href="#products" class="nav-cta">Shop Now</a>
+</nav>
+
+<!-- ── HERO ────────────────────────────────────────── -->
+<section id="hero">
+  <!-- decorative -->
+  <div class="hero-band"></div>
+  <div class="hero-threads">
+    <div class="thread"></div>
+    <div class="thread"></div>
+    <div class="thread"></div>
+    <div class="thread"></div>
+  </div>
+  <div class="hero-watermark"><span>EARTHLOOM</span></div>
+  <div class="hero-swatches">
+    <div class="swatch"></div>
+    <div class="swatch"></div>
+    <div class="swatch"></div>
+  </div>
+
+  <!-- main content -->
+  <div class="hero-content">
+    <p class="hero-eyebrow">New Collection 2025</p>
+    <h1 class="hero-title">
+      Made<br><em>Different.</em>
+    </h1>
+    <p class="hero-tagline">Earthloom — Made Different</p>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">
+      Crafted for those who move with intention. Every thread tells a story of the earth — raw, honest, and beautifully made.
+    </p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">Explore Collection</a>
+      <a href="#about" class="btn-ghost">Our Story</a>
+    </div>
+  </div>
+
+  <!-- bottom strip -->
+  <div class="hero-strip">
+    <div class="hero-strip-item"><strong>100%</strong><span>Premium Cotton</span></div>
+    <div class="hero-strip-item"><strong>500+</strong><span>Happy Customers</span></div>
+    <div class="hero-strip-item"><strong>∞</strong><span>Earth-Inspired</span></div>
+    <div class="hero-strip-item"><strong>BD</strong><span>Made in Bangladesh</span></div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ──────────────────────────────────────── -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">Earthloom</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Made Different</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Premium Quality</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Earth-Inspired Design</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Wear the Story</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Earthloom</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Made Different</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Premium Quality</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Earth-Inspired Design</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Wear the Story</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Earthloom</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Made Different</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Premium Quality</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Earth-Inspired Design</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Wear the Story</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Earthloom</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Made Different</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Premium Quality</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Earth-Inspired Design</span>
+    <span class="marquee-dot">·</span>
+    <span class="marquee-item">Wear the Story</span>
+    <span class="marquee-dot">·</span>
+  </div>
+</div>
+
+<!-- ── PRODUCTS ─────────────────────────────────────── -->
+<section id="products">
+  <div class="section-header reveal">
+    <div>
+      <p class="section-label">Our Collection</p>
+      <h2 class="section-title">Featured<br>Pieces</h2>
+    </div>
+    <a href="#" class="section-link">View All →</a>
+  </div>
+
+  <div class="products-grid">
+    <!-- Card 1 -->
+    <div class="product-card reveal">
+      <div class="product-img">
+        <div class="product-img-inner">
+          <span class="p-icon">👕</span>
+          <span>Product Image</span>
+        </div>
+        <span class="product-tag">New</span>
+      </div>
+      <p class="product-name">The Earthy Tee</p>
+      <p class="product-sub">Oversize · Unisex</p>
+      <p class="product-price">৳ 850</p>
+    </div>
+    <!-- Card 2 -->
+    <div class="product-card reveal" style="transition-delay:.1s">
+      <div class="product-img">
+        <div class="product-img-inner">
+          <span class="p-icon">👕</span>
+          <span>Product Image</span>
+        </div>
+        <span class="product-tag">Bestseller</span>
+      </div>
+      <p class="product-name">Loom Classic</p>
+      <p class="product-sub">Regular Fit · Unisex</p>
+      <p class="product-price">৳ 750</p>
+    </div>
+    <!-- Card 3 -->
+    <div class="product-card reveal" style="transition-delay:.2s">
+      <div class="product-img">
+        <div class="product-img-inner">
+          <span class="p-icon">👕</span>
+          <span>Product Image</span>
+        </div>
+      </div>
+      <p class="product-name">Raw Earth</p>
+      <p class="product-sub">Slim Fit · Unisex</p>
+      <p class="product-price">৳ 800</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ─────────────────────────────────────────── -->
+<section id="about">
+  <div class="about-visual reveal">
+    <div class="about-img-main">
+      <span class="a-icon">🌿</span>
+      <span>Brand Photo</span>
+    </div>
+    <div class="about-img-accent">
+      <span style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(247,240,230,.3)">Detail Shot</span>
+    </div>
+  </div>
+
+  <div class="about-text reveal" style="transition-delay:.15s">
+    <p class="section-label">Who We Are</p>
+    <h2 class="section-title">Rooted in the<br>Earth. Worn<br><em style="font-family:'Cormorant Garamond',serif;font-style:italic">with purpose.</em></h2>
+    <p>
+      Earthloom was born from a simple belief — that what you wear should feel as honest as the ground beneath your feet. We design t-shirts that carry meaning, texture, and soul.
+    </p>
+    <p>
+      Every piece is carefully crafted with premium materials and inspired by the raw beauty of the natural world. We don't follow trends — we create something different.
+    </p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Premium Cotton</div>
+      </div>
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Happy Customers</div>
+      </div>
+      <div>
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Made Different</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ──────────────────────────────────── -->
+<section id="testimonials">
+  <div class="section-header reveal">
+    <div>
+      <p class="section-label">What People Say</p>
+      <h2 class="section-title">Real Reviews,<br>Real People</h2>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="review-quote">"</div>
+      <p class="review-text">The quality is insane for the price. I've worn it 20 times and it still feels brand new. Earthloom actually delivers on its promise.</p>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-author">
+        <div class="review-avatar">R</div>
+        <div>
+          <div class="review-name">Rafiul Islam</div>
+          <div class="review-loc">Dhaka, Bangladesh</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal" style="transition-delay:.1s">
+      <div class="review-quote">"</div>
+      <p class="review-text">I love how the fit is different from regular brands. It's effortlessly stylish without trying too hard. Definitely ordering again.</p>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-author">
+        <div class="review-avatar">S</div>
+        <div>
+          <div class="review-name">Sadia Akter</div>
+          <div class="review-loc">Chittagong, Bangladesh</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal" style="transition-delay:.2s">
+      <div class="review-quote">"</div>
+      <p class="review-text">Bhai eita just a t-shirt na — it's a whole vibe. The earthy tones are perfect and the fabric feels premium. 10/10 recommend.</p>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-author">
+        <div class="review-avatar">T</div>
+        <div>
+          <div class="review-name">Tanvir Ahmed</div>
+          <div class="review-loc">Sylhet, Bangladesh</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ───────────────────────────────────────── -->
+<section id="gallery">
+  <div class="section-header reveal">
+    <div>
+      <p class="section-label">Instagram Feed</p>
+      <h2 class="section-title">Life in<br>Earthloom</h2>
+    </div>
+    <a href="https://www.instagram.com/earth_loom18/" target="_blank" class="section-link">@earth_loom18 →</a>
+  </div>
+
+  <div class="gallery-grid reveal">
+    <div class="gallery-item">
+      <div class="gallery-inner">
+        <span class="g-icon">📸</span>
+        <span>Featured Post</span>
+      </div>
+      <div class="gallery-overlay">
+        <span class="gallery-overlay-text">View on Instagram</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-inner"><span class="g-icon">📸</span><span>Post</span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">View</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-inner"><span class="g-icon">📸</span><span>Post</span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">View</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-inner"><span class="g-icon">📸</span><span>Post</span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">View</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-inner"><span class="g-icon">📸</span><span>Post</span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">View</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOCIAL CTA ────────────────────────────────────── -->
+<section id="social">
+  <p class="section-label">Stay Connected</p>
+  <h2 class="section-title" style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;margin-bottom:.8rem;">Follow the Journey</h2>
+  <p>Find us on social media for new drops, behind the scenes, and more.</p>
+  <div class="social-links">
+    <a href="https://www.facebook.com/profile.php?id=61568690516500" target="_blank" class="social-btn fb">
+      <span class="social-icon">f</span>
+      <span>Facebook</span>
+    </a>
+    <a href="https://www.instagram.com/earth_loom18/" target="_blank" class="social-btn ig">
+      <span class="social-icon">◎</span>
+      <span>Instagram</span>
+    </a>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-logo">EARTHLOOM</div>
+  <div class="footer-tagline">Made Different — Always</div>
+  <div class="footer-divider"></div>
+  <p class="dev-credit">
+    Designed &amp; Developed by&nbsp;
+    <a href="https://www.facebook.com/profile.php?id=61568690516500" target="_blank">Nosaib Mahmod Adil</a>
+  </p>
+  <div class="dev-links">
+    <a href="https://www.facebook.com/profile.php?id=61568690516500" target="_blank">Facebook</a>
+    <span style="color:rgba(201,175,144,.2)">|</span>
+    <a href="https://www.instagram.com/earth_loom18/" target="_blank">Instagram</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav shrink on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      nav.style.padding = '.9rem 4rem';
+    } else {
+      nav.style.padding = '1.4rem 4rem';
+    }
+  });
+</script>
+</body>
+</html>
